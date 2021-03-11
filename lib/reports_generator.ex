@@ -5,7 +5,7 @@ defmodule ReportsGenerator do
     |> handle_file()
   end
 
-  defp handle_file({:ok, result}), do: result
+  defp handle_file({:ok, file_content}), do: file_content
 
-  defp handle_file({:error, reason}), do: reason
+  defp handle_file({:error, _reason}), do: "Invalid file!"
 end
