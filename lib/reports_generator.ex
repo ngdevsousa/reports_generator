@@ -20,10 +20,15 @@ defmodule ReportsGenerator do
     |> Enum.reduce(report_acc(), fn line, report -> sum_values(line, report) end)
   end
 
+  def build_bulk(filenames) when not is_list(filenames),
+    do: {:error, "filenames must be a valid list of strings"}
+
   def build_bulk(filenames) do
-    filenames
+    result = filenames
     |> Task.async_stream(&build/1)
     |> Enum.reduce(report_acc(), fn {:ok, result}, report -> sum_reports(report, result) end)
+
+    {:ok, result}
   end
 
   def fetch_higher_cost(report, kind) when kind in @kinds do
